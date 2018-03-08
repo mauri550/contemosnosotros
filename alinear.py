@@ -150,7 +150,7 @@ cropThresh = thresh[y:h,x:w]
 # cv2.imshow("Final", crop)
 
 # Guardar imágenes
-cv2.imwrite(imageNameOut,crop, cv2.imwrite(imageNameOut,crop, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+cv2.imwrite(imageNameOut,crop, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 cv2.imwrite(imageNameNegativeOut,cropThresh)
 
 #cv2.waitKey(0)
