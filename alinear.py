@@ -128,13 +128,13 @@ cropThresh = thresh[y:h,x:w]
 cropThresh = cv2.bitwise_not(cropThresh)
 
 # Reducir tamano
-small = cv2.resize(cropThresh, (0,0), fx=0.6, fy=0.6) 
+small = cv2.resize(cropThresh, (0,0), fx=0.5, fy=0.5) 
 
 # Mostrar la imagen final
 # cv2.imshow("Final", small)
 
 # Guardar imágenes
-cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+cv2.imwrite(imageNameOut,small)
 
 #cv2.imwrite(imageNameNegativeOut,cropThresh)
 
