@@ -26,7 +26,8 @@ imageNameNegativeOut = args["negativeout"]
 
 # Cargar la imagen inicial del disco
 imageName = args["image"]
-image = cv2.imread(imageName)
+imageBig = cv2.imread(imageName)
+image = cv2.resize(imageBig, (0,0), fx=0.6, fy=0.6) 
 
 # Tratar de remover "ruido"
 image = cv2.fastNlMeansDenoisingColored(image,None,10,10,7,21)
@@ -150,8 +151,8 @@ cropThresh = thresh[y:h,x:w]
 # cv2.imshow("Final", crop)
 
 # Guardar imágenes
-small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
-cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+
+cv2.imwrite(imageNameOut,crop, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 
 #cv2.imwrite(imageNameNegativeOut,cropThresh)
 
