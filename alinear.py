@@ -87,7 +87,7 @@ else:
 (h, w) = image.shape[:2]
 center = (w // 2, h // 2)
 M = cv2.getRotationMatrix2D(center, angle, 1.0)
-rotated = cv2.warpAffine(image, M, (w, h),
+thresh = cv2.warpAffine(thresh, M, (w, h),
 	flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
 # Mostrar el ángulo de corrección final
@@ -95,34 +95,12 @@ print("[INFO] Angle: {:.3f}".format(angle))
 
 # cv2.imwrite("step2.png",rotated)
 
-# Convertir la nueva imagen a escala de grises, e invertir los
-# colores de fondo y frente para asegurar que el frente
-# sea "blanco" y el fondo "negro"
-gray = cv2.cvtColor(rotated, cv2.COLOR_BGR2GRAY)
-gray = cv2.bitwise_not(gray)
- 
-# Limitar la imagen, estableciendo todos los píxeles del
-# frente a 255 (blanco total), y los de fondo a 0 (negro total)
-thresh = cv2.threshold(gray, 0, 255,
-	cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-
-# Crear máscara para rellenar colores.
-# Nótese que el tamaño debe ser 2 píxeles más grande que el de la imagen.
-h, w = thresh.shape[:2]
-mask = np.zeros((h+2, w+2), np.uint8)
-
-# Rellenar bordes externos con color negro
-cv2.floodFill(thresh, mask, (0,0), 0)
-cv2.floodFill(thresh, mask, (0,h-1), 0)
-cv2.floodFill(thresh, mask, (w-1,0), 0)
-cv2.floodFill(thresh, mask, (w-1,h-1), 0)
-
 # Encontrar posibles contornos
 im2,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 print("[INFO] Contours {len}".format(len = len(contours)))
 
 # Obtener los mejores contornos
-maxH, maxW = rotated.shape[:2]
+maxH, maxW = thresh.shape[:2]
 best_box=[-1,-1,-1,-1]
 for c in contours:
    x,y,w,h = cv2.boundingRect(c)
@@ -143,16 +121,19 @@ x,y,w,h = best_box
 
 print("[INFO] Final contour rectangle: {x}, {y}, {w}, {h}".format(x=x, y=y,w=w, h=h))
 
-# Cortar imagen rotada, e imagen negativa rotada
-crop = rotated[y:h,x:w]
+# Cortar imagen negativa rotada
 cropThresh = thresh[y:h,x:w]
-small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
+
+# Re-invertir
+cropThresh = cv2.bitwise_not(cropThresh)
+
+# Reducir tamano
+small = cv2.resize(cropThresh, (0,0), fx=0.6, fy=0.6) 
 
 # Mostrar la imagen final
-# cv2.imshow("Final", crop)
+# cv2.imshow("Final", small)
 
 # Guardar imágenes
-
 cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 
 #cv2.imwrite(imageNameNegativeOut,cropThresh)
