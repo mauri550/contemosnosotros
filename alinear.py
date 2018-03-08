@@ -134,7 +134,7 @@ small = cv2.resize(cropThresh, (0,0), fx=0.5, fy=0.5)
 # cv2.imshow("Final", small)
 
 # Guardar imágenes
-cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
-cv2.imwrite(imageNameNegativeOut,cropThresh)
+cv2.imwrite(imageNameOut,small)
+#cv2.imwrite(imageNameNegativeOut,cropThresh)
 
 #cv2.waitKey(0)
