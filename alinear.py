@@ -145,16 +145,16 @@ print("[INFO] Final contour rectangle: {x}, {y}, {w}, {h}".format(x=x, y=y,w=w, 
 
 # Cortar imagen rotada, e imagen negativa rotada
 crop = rotated[y:h,x:w]
-#cropThresh = thresh[y:h,x:w]
-small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
+cropThresh = thresh[y:h,x:w]
+#small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
 
 # Mostrar la imagen final
 # cv2.imshow("Final", crop)
 
 # Guardar imágenes
 
-cv2.imwrite(imageNameOut,small)
-#cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+#cv2.imwrite(imageNameOut,small)
+cv2.imwrite(imageNameOut,crop, [cv2.IMWRITE_PNG_COMPRESSION, 9])
 
 #cv2.imwrite(imageNameNegativeOut,cropThresh)
 
