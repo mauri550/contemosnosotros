@@ -121,20 +121,19 @@ x,y,w,h = best_box
 
 print("[INFO] Final contour rectangle: {x}, {y}, {w}, {h}".format(x=x, y=y,w=w, h=h))
 
-# Cortar imagen negativa rotada
+# Cortar imagen rotada, e imagen negativa rotada
+crop = rotated[y:h,x:w]
 cropThresh = thresh[y:h,x:w]
-
-# Re-invertir
-cropThresh = cv2.bitwise_not(cropThresh)
-
-# Reducir tamano
-small = cv2.resize(cropThresh, (0,0), fx=0.5, fy=0.5) 
+small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
 
 # Mostrar la imagen final
-# cv2.imshow("Final", small)
+# cv2.imshow("Final", crop)
 
 # Guardar imágenes
+
 cv2.imwrite(imageNameOut,small)
+#cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+
 #cv2.imwrite(imageNameNegativeOut,cropThresh)
 
 #cv2.waitKey(0)
