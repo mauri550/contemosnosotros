@@ -87,8 +87,6 @@ else:
 (h, w) = image.shape[:2]
 center = (w // 2, h // 2)
 M = cv2.getRotationMatrix2D(center, angle, 1.0)
-rotated = cv2.warpAffine(image, M, (w, h),
-	flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 thresh = cv2.warpAffine(thresh, M, (w, h),
 	flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
@@ -102,7 +100,7 @@ im2,contours,hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APP
 print("[INFO] Contours {len}".format(len = len(contours)))
 
 # Obtener los mejores contornos
-maxH, maxW = rotated.shape[:2]
+maxH, maxW = thresh.shape[:2]
 best_box=[-1,-1,-1,-1]
 for c in contours:
    x,y,w,h = cv2.boundingRect(c)
@@ -123,18 +121,17 @@ x,y,w,h = best_box
 
 print("[INFO] Final contour rectangle: {x}, {y}, {w}, {h}".format(x=x, y=y,w=w, h=h))
 
-# Cortar imagen rotada, e imagen negativa rotada
-crop = rotated[y:h,x:w]
+# Cortar imagen negativa rotada
 cropThresh = thresh[y:h,x:w]
 
+# Re-invertir
+cropThresh = cv2.bitwise_not(cropThresh)
+
 # Reducir tamano
-small = cv2.resize(crop, (0,0), fx=0.6, fy=0.6) 
+small = cv2.resize(cropThresh, (0,0), fx=0.6, fy=0.6) 
 
 # Mostrar la imagen final
-# cv2.imshow("Final", crop)
-
-# Convertir a escala de grises
-small = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
+# cv2.imshow("Final", small)
 
 # Guardar imágenes
 cv2.imwrite(imageNameOut,small, [cv2.IMWRITE_PNG_COMPRESSION, 9])
