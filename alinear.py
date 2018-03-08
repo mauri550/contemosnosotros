@@ -1,3 +1,4 @@
+# coding=utf-8
 # Fuentes:
 # - Corregir alineación: https://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/
 # - Rellenar bordes: https://www.learnopencv.com/filling-holes-in-an-image-using-opencv-python-c/
