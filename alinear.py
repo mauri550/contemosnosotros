@@ -18,8 +18,10 @@ ap.add_argument("-i", "--image", required=True,
 	help="path to input image file")
 ap.add_argument("-o", "--out", required=True,
 	help="path to output image file")
-ap.add_argument("-n", "--negativeout", required=True,
-	help="path to output negative image file")
+
+#ap.add_argument("-n", "--negativeout", required=True,
+#	help="path to output negative image file")
+
 args = vars(ap.parse_args())
  
 imageNameOut = args["out"]
